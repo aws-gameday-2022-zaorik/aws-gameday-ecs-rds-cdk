@@ -1,0 +1,46 @@
+{
+  "ssm:account=390884088052:parameterName=hisama-gameday-vpc-id:region=ap-northeast-1": "vpc-01652ae4a26043aca",
+  "vpc-provider:account=390884088052:filter.vpc-id=vpc-01652ae4a26043aca:region=ap-northeast-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-01652ae4a26043aca",
+    "vpcCidrBlock": "10.0.0.0/16",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-01205414ebe94c1c6",
+            "cidr": "10.0.128.0/18",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-0ddc05a133f7eb8e2"
+          },
+          {
+            "subnetId": "subnet-094412fa33a7763a5",
+            "cidr": "10.0.192.0/18",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-01e4792ec28bce460"
+          }
+        ]
+      },
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-075492da13174da43",
+            "cidr": "10.0.0.0/18",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-0607772796ccbca80"
+          },
+          {
+            "subnetId": "subnet-01d387fc0b55a142d",
+            "cidr": "10.0.64.0/18",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-04b07b9103fe23254"
+          }
+        ]
+      }
+    ]
+  }
+}
