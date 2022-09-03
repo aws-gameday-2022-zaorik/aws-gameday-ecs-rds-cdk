@@ -3,17 +3,24 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { AwsGameday2022StackHisama } from '../lib/aws-gameday-2022-stack';
 import { HisamaVpc } from '../lib/vpc';
-import { HisamaGamedayEcs } from '../lib/ecs';
+import { HisamaGamedayEcs } from '../lib/ecs-stdout';
+import { HisamaGamedayEcsXray } from '../lib/ecs-xray';
+import { HisamaGamedayEcsLocalLog } from '../lib/ecs-locallog';
 
 const app = new cdk.App();
 const vpcStack = new HisamaVpc(app, 'HisamaGamedayVpc', {})
 const ecsStack = new HisamaGamedayEcs(app, 'HisamaGamedayECS',{
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION
-  }
+  vpc: vpcStack.vpc
 })
 ecsStack.addDependency(vpcStack)
+const ecsXrayStack = new HisamaGamedayEcsXray(app, 'HisamaGamedayEcsXray',{
+  vpc: vpcStack.vpc
+})
+ecsXrayStack.addDependency(vpcStack)
+const ecsLocalLog = new HisamaGamedayEcsLocalLog(app, 'HisamaGamedayEcsLocalLog', {
+  vpc: vpcStack.vpc
+})
+ecsLocalLog.addDependency(vpcStack)
 new AwsGameday2022StackHisama(app, 'AwsGameday2022StackHisama', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,

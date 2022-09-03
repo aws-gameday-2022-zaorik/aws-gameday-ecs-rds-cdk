@@ -1,1 +1,1 @@
-cdk diff --profile sandbox
+cdk diff
