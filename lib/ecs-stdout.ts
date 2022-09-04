@@ -1,10 +1,8 @@
-import { RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
+import { Stack, StackProps } from "aws-cdk-lib";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
-import { Repository, TagMutability } from "aws-cdk-lib/aws-ecr";
 import { DockerImageAsset } from "aws-cdk-lib/aws-ecr-assets";
 import { Cluster, ContainerImage, FargateService, FargateTaskDefinition, ListenerConfig, LogDrivers } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancer, ApplicationProtocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
-import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 import { join, resolve } from "path";
 
@@ -13,7 +11,6 @@ export interface IHisamaGamedayEcs extends StackProps{
 }
 
 export class HisamaGamedayEcs extends Stack {
-    private ecrName: string = 'hisama-gameday-ecr'
     private clusterName: string = 'hisama-gameday-cluster'
     private appContainerName: string = 'appContainer'
 

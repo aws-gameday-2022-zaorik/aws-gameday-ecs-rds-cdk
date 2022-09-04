@@ -6,21 +6,31 @@ import { HisamaVpc } from '../lib/vpc';
 import { HisamaGamedayEcs } from '../lib/ecs-stdout';
 import { HisamaGamedayEcsXray } from '../lib/ecs-xray';
 import { HisamaGamedayEcsLocalLog } from '../lib/ecs-locallog';
+import { HisamaGamedayEcsOnEc2 } from '../lib/ecs-on-ec2';
 
 const app = new cdk.App();
 const vpcStack = new HisamaVpc(app, 'HisamaGamedayVpc', {})
+
 const ecsStack = new HisamaGamedayEcs(app, 'HisamaGamedayECS',{
   vpc: vpcStack.vpc
 })
 ecsStack.addDependency(vpcStack)
+
 const ecsXrayStack = new HisamaGamedayEcsXray(app, 'HisamaGamedayEcsXray',{
   vpc: vpcStack.vpc
 })
 ecsXrayStack.addDependency(vpcStack)
+
 const ecsLocalLog = new HisamaGamedayEcsLocalLog(app, 'HisamaGamedayEcsLocalLog', {
   vpc: vpcStack.vpc
 })
 ecsLocalLog.addDependency(vpcStack)
+
+const ecsOnEc2 = new HisamaGamedayEcsOnEc2(app, 'HisamaGamedayEcsOnEc2', {
+  vpc: vpcStack.vpc
+})
+ecsOnEc2.addDependency(vpcStack)
+
 new AwsGameday2022StackHisama(app, 'AwsGameday2022StackHisama', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,

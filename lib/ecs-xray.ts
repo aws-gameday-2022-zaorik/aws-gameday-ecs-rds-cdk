@@ -4,7 +4,6 @@ import { DockerImageAsset } from "aws-cdk-lib/aws-ecr-assets";
 import { Cluster, ContainerImage, FargateService, FargateTaskDefinition, FirelensConfigFileType, FirelensLogRouterType, ListenerConfig, LogDrivers } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancer, ApplicationProtocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import { ManagedPolicy } from "aws-cdk-lib/aws-iam";
-import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 import { join, resolve } from "path";
 
