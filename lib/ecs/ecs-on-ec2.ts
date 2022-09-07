@@ -30,15 +30,15 @@ import { ManagedPolicy, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { join, resolve } from "path";
 
-export interface IHisamaGamedayEcsOnEc2 extends StackProps {
+export interface IGamedayEcsOnEc2 extends StackProps {
   vpc: Vpc;
 }
 
-export class HisamaGamedayEcsOnEc2 extends Stack {
-  private readonly clusterName: string = "hisama-gameday-ec2-cluster";
+export class GamedayEcsOnEc2 extends Stack {
+  private readonly clusterName: string = "gameday-ec2-cluster";
   private readonly appContainerName: string = "app-container";
 
-  constructor(scope: Construct, id: string, props: IHisamaGamedayEcsOnEc2) {
+  constructor(scope: Construct, id: string, props: IGamedayEcsOnEc2) {
     super(scope, id, props);
     const cluster: Cluster = new Cluster(this, this.clusterName, {
       vpc: props.vpc,
@@ -105,7 +105,7 @@ export class HisamaGamedayEcsOnEc2 extends Stack {
     cluster.addAsgCapacityProvider(capacityProvider);
 
     const taskDef = new Ec2TaskDefinition(this, "ec2serviceTaskDef", {
-      family: "hisamaEc2TaskDef",
+      family: "Ec2TaskDef",
       networkMode: NetworkMode.BRIDGE,
     });
     //   アプリコンテナは標準出力にログを出すものを使用し、firelensはデフォルトのもの
@@ -113,13 +113,13 @@ export class HisamaGamedayEcsOnEc2 extends Stack {
       containerName: this.appContainerName,
       image: ContainerImage.fromDockerImageAsset(
         new DockerImageAsset(this, "nginx-stdout", {
-          directory: join(resolve(__dirname, "../"), "nginx"),
+          directory: join(resolve(__dirname, "../../"), "nginx"),
         })
       ),
       logging: LogDrivers.firelens({
         options: {
           Name: "cloudwatch",
-          log_group_name: "hisama-nginx-from-firelens",
+          log_group_name: "nginx-from-firelens",
           log_stream_prefix: "on-ec2",
           auto_create_group: "true",
           region: this.region,

@@ -19,16 +19,16 @@ import { ManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { join, resolve } from "path";
 
-export interface IHisamaGamedayEcsLocalLog extends StackProps {
+export interface IGamedayEcsLocalLog extends StackProps {
   vpc: Vpc;
 }
-export class HisamaGamedayEcsLocalLog extends Stack {
-  private clusterName: string = "hisama-gameday-cluster-locallog";
+export class GamedayEcsLocalLog extends Stack {
+  private clusterName: string = "gameday-cluster-locallog";
   private appContainerName: string = "appContainer";
   private logVolumeName: string = "log-volume";
   private containerPath: string = "/var/log/nginx";
 
-  constructor(scope: Construct, id: string, props: IHisamaGamedayEcsLocalLog) {
+  constructor(scope: Construct, id: string, props: IGamedayEcsLocalLog) {
     super(scope, id, props);
     const cluster = new Cluster(this, this.clusterName, {
       vpc: props.vpc,
@@ -65,7 +65,11 @@ export class HisamaGamedayEcsLocalLog extends Stack {
       },
       image: ContainerImage.fromDockerImageAsset(
         new DockerImageAsset(this, "fluentbit-for-local-logfile", {
-          directory: join(resolve(__dirname, "../"), "fluentbit", "locallog"),
+          directory: join(
+            resolve(__dirname, "../../"),
+            "fluentbit",
+            "locallog"
+          ),
         })
       ),
       logging: LogDrivers.awsLogs({

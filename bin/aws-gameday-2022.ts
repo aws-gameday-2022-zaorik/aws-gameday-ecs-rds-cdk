@@ -1,49 +1,46 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { AwsGameday2022StackHisama } from "../lib/aws-gameday-2022-stack";
-import { HisamaVpc } from "../lib/vpc";
-import { HisamaGamedayEcs } from "../lib/ecs-stdout";
-import { HisamaGamedayEcsXray } from "../lib/ecs-xray";
-import { HisamaGamedayEcsLocalLog } from "../lib/ecs-locallog";
-import { HisamaGamedayEcsOnEc2 } from "../lib/ecs-on-ec2";
+import { GamedayVpc } from "../lib/vpc";
+import { GamedayEcs } from "../lib/ecs/ecs-stdout";
+import { GamedayEcsXray } from "../lib/ecs/ecs-xray";
+import { GamedayEcsLocalLog } from "../lib/ecs/ecs-locallog";
+import { GamedayEcsOnEc2 } from "../lib/ecs/ecs-on-ec2";
+import { Bastion } from "../lib/bastion";
+import { AuroraMysql } from "../lib/rds/aurora-mysql";
+import { AuroraPostgres } from "../lib/rds/aurora-postres";
+import { MysqlFromSnapshot } from "../lib/rds/mysql-from-snapshot";
+import { PostgresFromSnapshot } from "../lib/rds/postgres-from-snapshot";
+import { RdsMysql } from "../lib/rds/rds-mysql";
+import { RdsPostgres } from "../lib/rds/rds-postgres";
 
 const app = new cdk.App();
-const vpcStack = new HisamaVpc(app, "HisamaGamedayVpc", {});
+const vpcStack = new GamedayVpc(app, "GamedayVpc", {});
 
-const ecsStack = new HisamaGamedayEcs(app, "HisamaGamedayECS", {
+const ecsStack = new GamedayEcs(app, "GamedayECS", {
   vpc: vpcStack.vpc,
 });
 ecsStack.addDependency(vpcStack);
 
-const ecsXrayStack = new HisamaGamedayEcsXray(app, "HisamaGamedayEcsXray", {
+const ecsXrayStack = new GamedayEcsXray(app, "GamedayEcsXray", {
   vpc: vpcStack.vpc,
 });
 ecsXrayStack.addDependency(vpcStack);
 
-const ecsLocalLog = new HisamaGamedayEcsLocalLog(
-  app,
-  "HisamaGamedayEcsLocalLog",
-  {
-    vpc: vpcStack.vpc,
-  }
-);
+const ecsLocalLog = new GamedayEcsLocalLog(app, "GamedayEcsLocalLog", {
+  vpc: vpcStack.vpc,
+});
 ecsLocalLog.addDependency(vpcStack);
 
-const ecsOnEc2 = new HisamaGamedayEcsOnEc2(app, "HisamaGamedayEcsOnEc2", {
+const ecsOnEc2 = new GamedayEcsOnEc2(app, "GamedayEcsOnEc2", {
   vpc: vpcStack.vpc,
 });
 ecsOnEc2.addDependency(vpcStack);
 
-new AwsGameday2022StackHisama(app, "AwsGameday2022StackHisama", {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+new Bastion(app, "BastionStack", { vpc: vpcStack.vpc });
+new AuroraMysql(app, "AuroraMysql", { vpc: vpcStack.vpc });
+new AuroraPostgres(app, "AuroraPostgres", { vpc: vpcStack.vpc });
+new RdsMysql(app, "RdsforMysql", { vpc: vpcStack.vpc });
+new RdsPostgres(app, "RdsforPostgres", { vpc: vpcStack.vpc });
+new MysqlFromSnapshot(app, "MysqlFromSnapshot", { vpc: vpcStack.vpc });
+new PostgresFromSnapshot(app, "PostgresFromSnaphot", { vpc: vpcStack.vpc });

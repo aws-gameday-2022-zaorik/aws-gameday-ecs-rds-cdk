@@ -54,3 +54,34 @@ container_id や container_name、ecs_cluster などがあるので、これら�
 クエリ種類を Lambda のログを用いて説明していくれている良記事
 
 - [サンプルの構文が載っている AWS 公式](https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-examples.html)
+
+## SSM Session Manager Plugin
+
+### シンプルに踏み台 EC2 のセッションを開始する
+
+```
+ aws ssm start-session --target [instance id]
+```
+
+## EC2 を踏み台にして RDS にアクセスする
+
+- ポートフォワーディング
+
+```
+aws ssm start-session \
+    --target [instance-id] \
+    --document-name AWS-StartPortForwardingSessionToRemoteHost \
+    --parameters '{"host":["rds-endpointm"],"portNumber":["3306"], "localPortNumber":["3306"]}'
+```
+
+- mysql へのログイン
+
+```
+mysql -u admin -p -h 127.0.0.1 -P 3306
+```
+
+- postgres へのログイン
+
+```
+psql --host 127.0.0.1 --port 5432 --username postgres --password
+```
