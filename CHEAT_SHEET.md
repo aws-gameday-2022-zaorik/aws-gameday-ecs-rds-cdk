@@ -1,5 +1,11 @@
 # GameDay World Championship 2022 に向けて ECS を触っていたときのメモ
 
+## ECS Exec
+
+```
+aws ecs execute-command --region ap-northeast-1 --cluster [クラスター名] --task [タスク ID] --container [コンテナ名] --interactive --command "/bin/bash"
+```
+
 ## 標準出力するコンテナアプリを標準の firelens で CloudWachLogs に転送する
 
 アプリケーションコンテナの Logconfiguration に Option を指定しないと CloudWachLogs に転送してくれないという仕様で、どのサービスに転送するかで指定する Option が異なるのだが、そのリファレンスが公式ドキュメントになく（見つからなかった）GitHub にある
