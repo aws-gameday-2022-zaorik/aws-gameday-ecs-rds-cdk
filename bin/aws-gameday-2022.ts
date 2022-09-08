@@ -6,7 +6,7 @@ import { GamedayEcs } from "../lib/ecs/ecs-stdout";
 import { GamedayEcsXray } from "../lib/ecs/ecs-xray";
 import { GamedayEcsLocalLog } from "../lib/ecs/ecs-locallog";
 import { GamedayEcsOnEc2 } from "../lib/ecs/ecs-on-ec2";
-import { Bastion } from "../lib/bastion";
+import { Bastion, BastionInExistVpc } from "../lib/bastion";
 import { AuroraMysql } from "../lib/rds/aurora-mysql";
 import { AuroraPostgres } from "../lib/rds/aurora-postres";
 import { MysqlFromSnapshot } from "../lib/rds/mysql-from-snapshot";
@@ -38,6 +38,7 @@ const ecsOnEc2 = new GamedayEcsOnEc2(app, "GamedayEcsOnEc2", {
 ecsOnEc2.addDependency(vpcStack);
 
 new Bastion(app, "BastionStack", { vpc: vpcStack.vpc });
+new BastionInExistVpc(app, "BastionInExistVpc", {});
 new AuroraMysql(app, "AuroraMysql", { vpc: vpcStack.vpc });
 new AuroraPostgres(app, "AuroraPostgres", { vpc: vpcStack.vpc });
 new RdsMysql(app, "RdsforMysql", { vpc: vpcStack.vpc });
