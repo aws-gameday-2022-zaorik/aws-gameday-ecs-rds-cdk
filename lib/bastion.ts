@@ -13,7 +13,7 @@ export class Bastion extends Stack {
     super(scope, id, props);
     new BastionHostLinux(this, "bastion", {
       vpc: props.vpc,
-      instanceType: InstanceType.of(InstanceClass.T4G, InstanceSize.MEDIUM),
+      instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.SMALL),
     });
   }
 }

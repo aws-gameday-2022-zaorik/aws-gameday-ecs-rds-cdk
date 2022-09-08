@@ -27,7 +27,7 @@ export class GamedayVpcExisted extends Stack {
     super(scope, id, props);
 
     this.vpc = Vpc.fromLookup(this, "existedVpc", {
-      vpcId: "vpc-0e475e3ae68cc77bc",
+      vpcId: "vpc-0487aae8cf69a67fa",
     });
     new StringParameter(this, "vpcId", {
       stringValue: this.vpc.vpcId,

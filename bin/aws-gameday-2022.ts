@@ -16,7 +16,7 @@ import { RdsPostgres } from "../lib/rds/rds-postgres";
 
 const app = new cdk.App();
 // const vpcStack = new GamedayVpc(app, "GamedayVpc", {});
-const env = { account: "898207152345", region: "ap-northeast-1" };
+const env = { account: "204036550246", region: "us-west-2" };
 const vpcStack = new GamedayVpcExisted(app, "GamedayVpc", {
   env,
 });
