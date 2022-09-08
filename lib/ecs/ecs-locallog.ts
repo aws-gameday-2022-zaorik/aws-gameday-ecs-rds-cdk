@@ -1,5 +1,5 @@
 import { Stack, StackProps } from "aws-cdk-lib";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
+import { IVpc, Vpc } from "aws-cdk-lib/aws-ec2";
 import { DockerImageAsset } from "aws-cdk-lib/aws-ecr-assets";
 import {
   Cluster,
@@ -20,7 +20,7 @@ import { Construct } from "constructs";
 import { join, resolve } from "path";
 
 export interface IGamedayEcsLocalLog extends StackProps {
-  vpc: Vpc;
+  vpc: IVpc;
 }
 export class GamedayEcsLocalLog extends Stack {
   private clusterName: string = "gameday-cluster-locallog";

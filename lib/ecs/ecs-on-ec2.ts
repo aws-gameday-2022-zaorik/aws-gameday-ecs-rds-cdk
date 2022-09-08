@@ -2,6 +2,7 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { AutoScalingGroup } from "aws-cdk-lib/aws-autoscaling";
 import {
   InstanceType,
+  IVpc,
   LaunchTemplate,
   Peer,
   Port,
@@ -31,7 +32,7 @@ import { Construct } from "constructs";
 import { join, resolve } from "path";
 
 export interface IGamedayEcsOnEc2 extends StackProps {
-  vpc: Vpc;
+  vpc: IVpc;
 }
 
 export class GamedayEcsOnEc2 extends Stack {
